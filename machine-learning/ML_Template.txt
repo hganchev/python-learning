@@ -1,3 +1,4 @@
+# 0. Decide if AI is the right approach?
 # 1. Load the data
 # 2. Prepare the data
 # 3. Choose a model
