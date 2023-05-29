@@ -1,9 +1,10 @@
 # 0. Decide if AI is the right approach?
 # 1. Load the data
 # 2. Prepare the data
+# 2.1 Split your data - training data(80%), test data(20%)
 # 3. Choose a model
 # 4. Train the model
-# 5. Evaluate the model
+# 5. Evaluate the model (test with test data)
 # 6. Parameter tuning
 # 7. Predict on new cases
 # 8. Save the model
