@@ -1,0 +1,8 @@
+# 1. Load the data
+# 2. Prepare the data
+# 3. Choose a model
+# 4. Train the model
+# 5. Evaluate the model
+# 6. Parameter tuning
+# 7. Predict on new cases
+# 8. Save the model
