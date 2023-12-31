@@ -1,9 +1,8 @@
 import multiprocessing
-from multiprocessing import Pool
-from multiprocessing import Queue
+from multiprocessing import Process, Pool , Queue , Pipe
 import time
 
-def function(num):
+def f_cpu(num):
     """Function that uses CPU"""
     for i in range(5):
         print(f'Function {num}: {i}')
@@ -11,27 +10,38 @@ def function(num):
 
 def main_Process():
     for i in range(5):
-        proces = multiprocessing.Process(target=function, args=(i,))
+        proces = Process(target=f_cpu, args=(i,))
         proces.start()
         proces.join()
 
 def main_Pool():
     # every process uses 1 core if pool is bigger than number of cores then it waits for free core
     with Pool(processes=2) as pool: 
-        pool.apply_async(function, args=(1,))
-        pool.apply_async(function, args=(2,))
-        pool.apply_async(function, args=(3,))
+        pool.apply_async(f_cpu, args=(1,))
+        pool.apply_async(f_cpu, args=(2,))
+        pool.apply_async(f_cpu, args=(3,))
         pool.close()
         pool.join()
 
-def f(q):
+def f_queue(q):
     q.put([42, None, 'hello'])
 
 def main_Queue():
     q = Queue()
-    p = multiprocessing.Process(target=f, args=(q,))
+    p = Process(target=f_queue, args=(q,))
     p.start()
     print(q.get())    # prints "[42, None, 'hello']"
+    p.join()
+
+def f_pipe(conn):
+    conn.send([42, None, 'hello'])
+    conn.close()
+
+def main_Pipe():
+    parent_conn, child_conn = Pipe()
+    p = Process(target=f_pipe, args=(child_conn,))
+    p.start()
+    print(parent_conn.recv())   # prints "[42, None, 'hello']"
     p.join()
 
 def main(): 
@@ -41,6 +51,8 @@ def main():
     main_Pool()
     print('Queue')
     main_Queue()
+    print('Pipe')
+    main_Pipe()
 
 if __name__ == '__main__':
     main()
